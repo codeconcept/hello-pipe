@@ -3,6 +3,8 @@ import { AppService } from './app.service';
 import { UpperPipe } from './upper.pipe';
 import { SlugPipe } from './slug.pipe';
 import { ParseIntPipe } from './parse-int.pipe';
+import { CreateArticleDto } from './create-article.dto';
+import { ValidationPipe } from './validation.pipe';
 
 @Controller()
 export class AppController {
@@ -32,5 +34,11 @@ export class AppController {
   @UsePipes(UpperPipe)
   createMessage(@Body() message) {
     return message;
+  }
+
+  @Post('articles')
+  createArticle(@Body(ValidationPipe) article: CreateArticleDto) {
+    (article as any).createdAt = new Date().toISOString();
+    return article;
   }
 }
